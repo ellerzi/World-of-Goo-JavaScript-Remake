@@ -1,0 +1,63 @@
+<scene minx="-547.5" miny="0" maxx="547.5" maxy="600" backgroundcolor="0,0,0" >
+
+	<!-- ForceFields -->
+	<radialforcefield id="worldGravity" type="gravity" center="-155.5,297" radius="998" forceatcenter="-12" forceatedge="-4" dampeningfactor="0" antigrav="true" geomonly="false" enabled="true" />
+	<linearforcefield type="gravity" force="0,0" dampeningfactor="0.0" antigrav="true" geomonly="false" />
+
+	<!-- Particles -->
+	<particles effect="worldMap_FactorySmokeWhite" depth="-24" pos="-170.5,423" pretick="0" />
+	<particles effect="blackBallsRight" depth="80" pretick="0" />
+	<particles effect="mistRight" depth="-64" pretick="0" />
+
+	<!-- SceneLayers -->
+	<SceneLayer id="newmail" name="newmail" depth="8.8" x="-172.07" y="386.64" scalex="0.263" scaley="0.263" rotation="16.14" alpha="1" colorize="255,255,255" image="IMAGE_SCENE_MAPWORLDVIEW_NEWMAIL"   />
+	<SceneLayer name="globe_shadow" depth="0" x="-155.5" y="297" scalex="1" scaley="1" rotation="0" alpha="1" colorize="255,255,255" image="IMAGE_SCENE_MAPWORLDVIEW_GLOBE_SHADOW"   />
+	<SceneLayer name="windmillPropellerSmall" depth="-0.8" x="-69.5" y="241" scalex="0.406" scaley="0.406" rotation="0" alpha="1" colorize="0,0,0" image="IMAGE_SCENE_MAPWORLDVIEW_WINDMILLPROPELLERSMALL" anim="rot_1rps" animspeed="-0.25"   />
+	<SceneLayer name="windmillPropellerSmall" depth="-0.8" x="-36.5" y="256" scalex="0.781" scaley="0.781" rotation="0" alpha="1" colorize="0,0,0" image="IMAGE_SCENE_MAPWORLDVIEW_WINDMILLPROPELLERSMALL" anim="rot_1rps" animspeed="-0.25"   />
+	<SceneLayer name="gear1blurGray" depth="-0.8" x="-158.78" y="395.37" scalex="0.125" scaley="0.125" rotation="7.96" alpha="1" colorize="0,0,0" image="IMAGE_SCENE_MAPWORLDVIEW_GEAR1BLURGRAY" anim="rot_1rps" animspeed="2"   />
+	<SceneLayer name="gear1blurGray" depth="-0.8" x="-182.65" y="363.8" scalex="0.217" scaley="0.217" rotation="7.96" alpha="1" colorize="0,0,0" image="IMAGE_SCENE_MAPWORLDVIEW_GEAR1BLURGRAY" anim="rot_1rps" animspeed="-1"   />
+	<SceneLayer name="gear1blurGray" depth="-0.8" x="-126.09" y="238.42" scalex="0.218" scaley="0.218" rotation="0" alpha="1" colorize="0,0,0" image="IMAGE_SCENE_MAPWORLDVIEW_GEAR1BLURGRAY" anim="rot_1rps" animspeed="-0.8"   />
+	<SceneLayer name="letterbox_top" depth="0" x="0" y="539.01" scalex="2.139" scaley="1.086" rotation="0" alpha="1" colorize="255,255,255" image="IMAGE_SCENE_MAPWORLDVIEW_LETTERBOX_TOP"   />
+	<SceneLayer name="letterbox_top" depth="0" x="0" y="57.97" scalex="2.139" scaley="0.964" rotation="-180" alpha="1" colorize="255,255,255" image="IMAGE_SCENE_MAPWORLDVIEW_LETTERBOX_TOP"   />
+	<SceneLayer name="swirlMist" depth="-8" x="-157.5" y="295" scalex="1" scaley="1" rotation="-6.09" alpha="1" colorize="255,255,255" image="IMAGE_SCENE_MAPWORLDVIEW_SWIRLMIST" anim="rot_1rps" animspeed="-0.5"   />
+	<SceneLayer name="swirlClouds" depth="-8.8" x="-156.11" y="291.88" scalex="0.837" scaley="0.837" rotation="-6.01" alpha="1" colorize="255,255,255" image="IMAGE_SCENE_MAPWORLDVIEW_SWIRLCLOUDS" anim="rot_1rps" animspeed="-0.2"   />
+	<SceneLayer name="swirlClouds" depth="-8.8" x="-155.78" y="293.16" scalex="0.913" scaley="0.913" rotation="-42.07" alpha="0.46999999880791" colorize="255,255,255" image="IMAGE_SCENE_MAPWORLDVIEW_SWIRLCLOUDS" anim="rot_1rps" animspeed="-0.3"   />
+		<SceneLayer name="title_WORLD" depth="-17.6" x="-180.5" y="407.5" scalex="1" scaley="1" rotation="8.54" alpha="1" colorize="255,255,255" image="IMAGE_SCENE_MAPWORLDVIEW_TITLE_WORLD"   />
+		<SceneLayer name="title_OF" depth="-17.6" x="-322.5" y="240.5" scalex="1" scaley="1" rotation="0" alpha="1" colorize="255,255,255" image="IMAGE_SCENE_MAPWORLDVIEW_TITLE_OF"   />
+		<SceneLayer name="title_GOO" depth="-17.6" x="-136" y="168.99" scalex="1" scaley="1" rotation="9.83" alpha="1" colorize="255,255,255" image="IMAGE_SCENE_MAPWORLDVIEW_TITLE_GOO"   />
+	<SceneLayer name="burst" depth="-24" x="-154.49" y="288.97" scalex="2.754" scaley="2.754" rotation="0" alpha="0.40000000596046" colorize="255,255,255" image="IMAGE_SCENE_MAPWORLDVIEW_BURST" anim="rot_1rps" animspeed="-0.05"   />
+	<SceneLayer name="bg" depth="-80" x="0" y="300" scalex="8.556" scaley="3.375" rotation="0" alpha="1" colorize="255,255,255" image="IMAGE_SCENE_MAPWORLDVIEW_BG"   />
+
+	<!-- Buttons -->
+
+	<buttongroup id="boringmenugroup" osx="54,1.12" >
+		<button id="changename" depth="8" x="108.45" y="90.87" scalex="0.44" scaley="0.44" rotation="-1.09" alpha="1" colorize="255,255,255"   up="IMAGE_SCENE_MAPWORLDVIEW_MM_PROFILES_UP" over="IMAGE_SCENE_MAPWORLDVIEW_MM_PROFILES_OVER" onclick="showselectprofile" onmouseenter="showtooltip" onmouseexit="hidetooltip" tooltip="TOOLTIP_PROFILES" overlay="true" />
+		<button id="credits" depth="8" x="181.33" y="93.88" scalex="0.44" scaley="0.44" rotation="2.89" alpha="1" colorize="255,255,255"   up="IMAGE_SCENE_MAPWORLDVIEW_MM_CREDITS_UP" over="IMAGE_SCENE_MAPWORLDVIEW_MM_CREDITS_OVER" onclick="credits" onmouseenter="showtooltip" onmouseexit="hidetooltip" tooltip="TOOLTIP_CREDITS" overlay="true" />
+		<button id="quit" depth="8" x="250.35" y="97.77" scalex="0.44" scaley="0.44" rotation="0.43" alpha="1" colorize="255,255,255"   up="IMAGE_SCENE_MAPWORLDVIEW_MM_EXIT_UP" over="IMAGE_SCENE_MAPWORLDVIEW_MM_EXIT_OVER" onclick="quit" onmouseenter="showtooltip" onmouseexit="hidetooltip" tooltip="TOOLTIP_QUIT" overlay="true" />
+	</buttongroup>
+
+	<buttongroup id="mainbuttongroup" osx="130,1.2" >
+		<button id="island1" depth="8" x="-89" y="341.5" scalex="0.534" scaley="0.534" rotation="-52.09" alpha="1" colorize="255,255,255"   up="IMAGE_SCENE_MAPWORLDVIEW_II_C1_UP" over="IMAGE_SCENE_MAPWORLDVIEW_II_C1_OVER" onclick="island1" onmouseenter="island1showtext" onmouseexit="islandhidetext" />
+		<button id="island2" depth="8" x="-62.8" y="256.97" scalex="0.52" scaley="0.52" rotation="-110.63" alpha="1" colorize="255,255,255"   up="IMAGE_SCENE_MAPWORLDVIEW_II_C2_UP" over="IMAGE_SCENE_MAPWORLDVIEW_II_C2_OVER" disabled="IMAGE_SCENE_MAPWORLDVIEW_II_C2_DISABLED" onclick="island2" onmouseenter="island2showtext" onmouseexit="islandhidetext" />
+		<button id="island4" depth="8" x="-226.78" y="252.57" scalex="0.656" scaley="0.656" rotation="124.41" alpha="1" colorize="255,255,255"   up="IMAGE_SCENE_MAPWORLDVIEW_II_C4_UP" over="IMAGE_SCENE_MAPWORLDVIEW_II_C4_OVER" disabled="IMAGE_SCENE_MAPWORLDVIEW_II_C4_DISABLED" onclick="island4" onmouseenter="island4showtext" onmouseexit="islandhidetext" />
+		<button id="island3" depth="8" x="-144.1" y="210.08" scalex="0.727" scaley="0.632" rotation="-172.95" alpha="1" colorize="255,255,255"   up="IMAGE_SCENE_MAPWORLDVIEW_II_C3_UP" over="IMAGE_SCENE_MAPWORLDVIEW_II_C3_OVER" disabled="IMAGE_SCENE_MAPWORLDVIEW_II_C3_DISABLED" onclick="island3" onmouseenter="island3showtext" onmouseexit="islandhidetext" />
+		<button id="island5" depth="8" x="-246.66" y="336.77" scalex="0.785" scaley="0.718" rotation="63.69" alpha="1" colorize="255,255,255"   up="IMAGE_SCENE_MAPWORLDVIEW_II_C5_UP" over="IMAGE_SCENE_MAPWORLDVIEW_II_C5_OVER" disabled="IMAGE_SCENE_MAPWORLDVIEW_II_C5_DISABLED" onclick="island5" onmouseenter="island5showtext" onmouseexit="islandhidetext" />
+		<button id="wogcorp_intact" depth="8" x="-174.56" y="408.72" scalex="0.502" scaley="0.502" rotation="7.96" alpha="1" colorize="255,255,255"   up="IMAGE_SCENE_MAPWORLDVIEW_II_WOGC_UP" over="IMAGE_SCENE_MAPWORLDVIEW_II_WOGC_OVER" disabled="IMAGE_SCENE_MAPWORLDVIEW_II_WOGC_DISABLED" onclick="wogcorp" onmouseenter="wogcorpshowtext" onmouseexit="islandhidetext" />
+		<button id="wogcorp_3d" depth="8" x="-174.41" y="404.61" scalex="0.666" scaley="0.61" rotation="7.96" alpha="1" colorize="255,255,255"   up="IMAGE_SCENE_MAPWORLDVIEW_II_WOGC3D_UP" over="IMAGE_SCENE_MAPWORLDVIEW_II_WOGC3D_OVER" onclick="wogcorp" onmouseenter="wogcorpshowtext" onmouseexit="islandhidetext" />
+		<button id="wogcorp_destroyed" depth="8" x="-175.19" y="395.85" scalex="0.588" scaley="0.771" rotation="6.7" alpha="1" colorize="255,255,255"   up="IMAGE_SCENE_MAPWORLDVIEW_II_WOGCD_UP" over="IMAGE_SCENE_MAPWORLDVIEW_II_WOGCD_OVER" onclick="wogcorp" onmouseenter="wogcorpdshowtext" onmouseexit="islandhidetext" />
+	</buttongroup>
+
+	<!-- Labels -->
+	<label id="newballs" depth="0" x="-198.12" y="420.76" align="left" rotation="8.779" scale="1" overlay="true" screenspace="false" font="FONT_OUTLINE_18" text="LABEL_PLUS_X"  />
+
+	<!-- Static Geometry -->
+	<circle id="world" static="true" tag="walkable" material="verysticky" x="-158" y="295.5" radius="72.5" />
+	<line id="" static="true" tag="detaching" material="rock" anchor="54.0029,-700.042" normal="0,1" />
+	<line id="" static="true" tag="detaching" material="rock" anchor="47.0042,1211.0391" normal="0,-1" />
+	<line id="" static="true" tag="detaching" material="rock" anchor="819.0137,262" normal="-1,0.0014" />
+	<line id="" static="true" tag="detaching" material="rock" anchor="-1083.0347,236.4971" normal="1,-0.0014" />
+
+	<!-- Dynamic Geometry -->
+
+	<!-- Geometry Constraints -->
+</scene>
