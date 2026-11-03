@@ -1,3 +1,4 @@
+// i honestly could have just merged this with another javascript file but who gaf its more organized
 (function () {
   var S = WOG.water = {
     SPACING: 10,

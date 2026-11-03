@@ -1,3 +1,4 @@
+// i havent got the gravity right
 (function () {
   var P = WOG.pipe = {
     suckSpeed: 520,

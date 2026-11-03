@@ -1,3 +1,5 @@
+// movie loader that only loads like 8 movies and none of them are level movies
+// only here because of xowerr
 (function () {
   var A = WOG.attr, num = WOG.num;
   var MOVIE_W = 1095, VIEW_W = 800, VIEW_H = 600;

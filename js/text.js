@@ -1,3 +1,5 @@
+// read text strings
+// yes
 (function () {
   var strings = {};
   WOG.text = {

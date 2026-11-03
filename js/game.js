@@ -1,4 +1,4 @@
-//game starter
+// game starter
 (function () {
   var BASE_W = 800, BASE_H = 600;
 

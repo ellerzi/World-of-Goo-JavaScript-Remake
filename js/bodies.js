@@ -1,3 +1,4 @@
+//work on bodies for the other stuff
 (function () {
   var contact = WOG.World.contact;
   var K = WOG.BODY = {

@@ -1,3 +1,4 @@
+//camera functions including end cameras and other stuff idk
 (function () {
   function Camera() {
     this.x = 0; this.y = 0; this.zoom = 1;

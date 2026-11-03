@@ -1,3 +1,5 @@
+// might need to tweak this still because this does not use ODE unlike the original game
+// hey, if you're reading this please help me with the physics.
 (function () {
   var P = WOG.PHYS = {
     enabled: true,
@@ -62,6 +64,7 @@
     stickMargin: 1.5
   };
 
+  // materials like that
   WOG.loadMaterials = async function (url) {
     var doc = await WOG.fetchXML(url || 'properties/materials.xml.xml');
     var m = {};

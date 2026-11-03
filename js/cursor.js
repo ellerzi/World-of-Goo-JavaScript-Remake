@@ -1,3 +1,4 @@
+//mouse and circle thingy that follows your mouse yah bro
 (function () {
   var N = 24, STEP_HZ = 60;
   var pts = [], acc = 0, started = false, t = 0;

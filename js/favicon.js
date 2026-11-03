@@ -1,6 +1,8 @@
+// unneeded favicons just to make the game look good
+// no ready ready just names haha🤑
 (function () {
   var F = WOG.favicon = { DIR: 'res/favicons/', EXT: '.png', ISLANDS: ['island1', 'island2', 'island3', 'island4', 'island5', 'island6'], map: null, last: null, ticket: 0 };
-
+// i didnt feel like typing the directory im so lazy but im not becayuse ismj fh kjhbhj ehjekjbevmvnuekhekj  fr
   async function levelMap() {
     if (F.map) return F.map;
     var m = {};

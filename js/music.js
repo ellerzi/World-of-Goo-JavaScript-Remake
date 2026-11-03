@@ -1,3 +1,5 @@
+// why are they .ogg files and not .mp3? probably some old 2008 shit
+// 2008 prime ronaldo
 (function () {
   var M = WOG.music = {
     volume: 1,

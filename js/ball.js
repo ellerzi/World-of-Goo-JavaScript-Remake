@@ -1,3 +1,4 @@
+// game.js needs the game to run but balls.js is needed for the game to be the game
 (function () {
   var A = WOG.attr, num = WOG.num;
 

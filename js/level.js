@@ -1,3 +1,4 @@
+// this is how you load the levels that make you wanna punch your screen xO
 (function () {
 
   WOG.GEOM_IMAGE_DEPTH = 0;

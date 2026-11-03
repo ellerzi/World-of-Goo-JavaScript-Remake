@@ -1,3 +1,4 @@
+// now that im thinking about it why are they called islands? theyre chapters not islands
 (function () {
   var A = WOG.attr;
   WOG.islands = {};

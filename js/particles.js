@@ -1,3 +1,5 @@
+// lowkey i thought i wouldnt need to import particles. I was wrong.
+//  ncbijkskvpsivnjohsbpoijs filler text ijdpfoskj
 (function () {
   var A = WOG.attr, num = WOG.num;
   var FX = WOG.fx = {
@@ -91,7 +93,7 @@
     var f = cam.depthFactor(e.depth) || 1, hw = vw / (2 * cam.zoom * f) + e.def.margin, hh = vh / (2 * cam.zoom * f) + e.def.margin;
     return { x0: cam.x - hw, x1: cam.x + hw, y0: cam.y - hh, y1: cam.y + hh };
   }
-
+  // spawn 
   function spawn(e, reg, inside) {
     var d = e.def, t = pick(d.particles);
     if (!t || !t.images.length) return;

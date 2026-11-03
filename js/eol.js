@@ -1,3 +1,4 @@
+// level end sequence 
 (function () {
   var A = WOG.attr, num = WOG.num;
   var E = WOG.eol = {
@@ -154,7 +155,7 @@
     } catch (e) { console.error('end-of-level screen failed:', e); }
     game.eolStarting = false;
   };
-
+// start now!!!!!!!!!!!!!!!!!!
   async function runSequence(game, res, s) {
     var M = WOG.movie, v = { vars: s.vars, hold: true };
     s.phase = 'fly';

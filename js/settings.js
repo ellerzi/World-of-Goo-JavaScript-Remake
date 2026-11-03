@@ -1,3 +1,4 @@
+// settings because i needed to replace the quit button and thought of this
 (function () {
   var KEY = 'wog.settings.v1'
   var CATS = [
