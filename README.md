@@ -13,7 +13,7 @@ This is an unofficial fan project. It is not affiliated with or endorsed by 2D B
 
 **This repository contains no game assets.** To run the remake you must own a legal copy of *World of Goo* and supply your own files. You will need:
 
-* Your official game installation files, specifically the `res` and `properties` folders. These should come from v1.3. You can also use files from v1.5, however you need to rename the files to `name.level.xml` rather than `name.level`..
+* Your official game installation files, specifically the `res` and `properties` folders. These should come from v1.3. You can also use files from v1.5, however you need to rename the files to `name.level.xml` rather than `name.level`.
 * An AES `.bin` file decryptor: [Gootool](http://147.182.181.5:8000/downloads/9d92b7ea-5755-4203-8134-8cc7505b05d8_Gootool.zip).
 * A `.binltl` decryptor. I recommend xowy64's [World of Goo Animation Tool](https://github.com/xowy64/worldofgoo-animtool/releases/tag/v1.0).
 
