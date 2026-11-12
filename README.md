@@ -2,9 +2,10 @@
 
 A JavaScript web remake of the classic physics puzzle game **World of Goo**, built to run in your browser.
 
-> **Status:** Mixed. Still working on the pipe, level finishing animations, EOL, etc.   
+> **Status:** Mixed. Still working on the pipe, level finishing animations, EOL, etc.
 
-<!-- Add a screenshot or short GIF here, e.g. ![Gameplay screenshot](screenshot.png) -->
+![World Map Screenshot](res/levels/MapWorldView/img1.png)
+![Going Up](res/levels/MapWorldView/img2.png)
 
 ## Notice
 
@@ -12,7 +13,7 @@ This is an unofficial fan project. It is not affiliated with or endorsed by 2D B
 
 **This repository contains no game assets.** To run the remake you must own a legal copy of *World of Goo* and supply your own files. You will need:
 
-* Your official game installation files, specifically the `res` and `properties` folders. These should come from [the PC version / specify version, e.g. v1.3].
+* Your official game installation files, specifically the `res` and `properties` folders. These should come from v1.3. You can also use files from v1.5, however you need to rename the files to `name.level.xml` rather than `name.level`..
 * An AES `.bin` file decryptor: [Gootool](http://147.182.181.5:8000/downloads/9d92b7ea-5755-4203-8134-8cc7505b05d8_Gootool.zip).
 * A `.binltl` decryptor. I recommend xowy64's [World of Goo Animation Tool](https://github.com/xowy64/worldofgoo-animtool/releases/tag/v1.0).
 
@@ -29,7 +30,7 @@ Copy the `res` and `properties` folders from your installation into a new workin
 Clone or download this repository:
 
 ```bash
-git clone [repository URL]
+git clone https://github.com/ellerzi/World-of-Goo-JavaScript-Remake/
 ```
 
 ### 3. Combine everything into one folder
@@ -74,7 +75,7 @@ Tested in: Latest version of Microsoft Edge.
 
 ## Contributing and bug reports
 
-Found a bug or want to help? [Open an issue / submit a pull request] on this repository. When reporting a problem, include your browser, the game version your files came from, and any errors from the browser console.
+Found a bug or want to help? [Open an issue](https://github.com/ellerzi/World-of-Goo-JavaScript-Remake/issues) or [submit a pull request](https://github.com/ellerzi/World-of-Goo-JavaScript-Remake/pulls). When reporting a problem, include your browser, the game version your files came from, and any errors from the browser console.
 
 ## Credits
 
@@ -83,4 +84,4 @@ Found a bug or want to help? [Open an issue / submit a pull request] on this rep
 
 ## License
 
-[Add your license here, e.g. MIT for the code in this repository. Note that this license does not cover any *World of Goo* assets.]
+The code in this repository is released under the [MIT License](LICENSE). This license does not cover *World of Goo* itself or any of its assets, which remain the property of their respective owners.
