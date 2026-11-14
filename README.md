@@ -68,6 +68,7 @@ Open your browser and go to `http://localhost:8000`.
 * **Error: HTTP 404 for *file***. Check that `res` and `properties` sit next to `index.html` and that none of the `.bin` or `.binltl` files are still encrypted.
 * **Error: Failed to fetch** You need to use the local server from step 4.
 * **Nothing happens when you run the server command:** Make sure Python 3 is installed, and that you ran the command from inside your project folder.
+* **Any other error:** Make sure your decoded game files are there, and if they are, open an issue.
 
 ## Browser support
 
@@ -82,7 +83,7 @@ Want to help tune the physics to match the original game? You can contribute in 
 
 * **Compare side-by-side:** Record short clips or take screenshots comparing a specific level or Goo Ball behavior in the original v1.3 game against the JS remake.
 * **Isolate specific mechanics:** Let us know exactly what feels off. Helpful details include tower sway, strand springiness, Goo Ball weight, wind/gravity forces, or how specific ball types (like Ivy, Balloon, or Water) react.
-* **Levels to try:** I typically try these three levels: Going Up, Ivy Towers, Leap Hole, and Burning Man.
+* **Levels to try:** I typically try these four levels: Going Up, Ivy Towers, Leap Hole, and Burning Man.
 
 
 ## Credits
@@ -92,7 +93,7 @@ Want to help tune the physics to match the original game? You can contribute in 
 
 ## Live Demo
 
-Try a three-level demo, including wogcorp here: [World of Goo JavaScript Remake](http://wogjs.pages.dev/)
+Try a three-level pre-built demo here: [World of Goo JavaScript Remake](https://wogjs.pages.dev/)
 
 ## License
 
