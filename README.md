@@ -90,6 +90,10 @@ Want to help tune the physics to match the original game? You can contribute in 
 * [World of Goo](https://worldofgoo.com/) by 2D Boy, the original game.
 * [xowy64](https://github.com/xowy64) for the World of Goo Animation Tool.
 
+## Live Demo
+
+Try a three-level demo, including wogcorp here: [World of Goo JavaScript Remake](https://pages.dev)
+
 ## License
 
 The code in this repository is released under the [MIT License](LICENSE). This license does not cover *World of Goo* itself or any of its assets, which remain the property of their respective owners.
