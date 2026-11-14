@@ -92,7 +92,7 @@ Want to help tune the physics to match the original game? You can contribute in 
 
 ## Live Demo
 
-Try a three-level demo, including wogcorp here: [World of Goo JavaScript Remake](https://pages.dev)
+Try a three-level demo, including wogcorp here: [World of Goo JavaScript Remake](http://wogjs.pages.dev/)
 
 ## License
 
