@@ -77,7 +77,7 @@ Tested in: Latest version of Microsoft Edge.
 
 Found a bug or want to help? [Open an issue](https://github.com/ellerzi/World-of-Goo-JavaScript-Remake/issues) or [submit a pull request](https://github.com/ellerzi/World-of-Goo-JavaScript-Remake/pulls). When reporting a problem, include your browser, the game version your files came from, and any errors from the browser console.
 
-### Helping with Physics
+## Helping with Physics
 Want to help tune the physics to match the original game? You can contribute in a few ways:
 
 * **Compare side-by-side:** Record short clips or take screenshots comparing a specific level or Goo Ball behavior in the original v1.3 game against the JS remake.
