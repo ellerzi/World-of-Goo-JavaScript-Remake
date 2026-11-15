@@ -12,6 +12,7 @@
     spawnY: 255,
     spawnSpread: 16,
     waterDamp: 0.6,
+    waterColor: [255, 0, 0, 0],
     fillRate: 60,
     areaPerBall: 1.35,
     flushBoost: 3,
@@ -215,6 +216,11 @@
     s.tank = L && R && B ? { x0: L.x + L.width / 2, x1: R.x - R.width / 2, y0: B.y + B.height / 2, y1: L.y + L.height / 2, wallL: L, wallR: R, floor: B } : null;
     if (s.tank && s.goo) { s.floorY = s.tank.y0; s.goo.width = s.tank.x1 - s.tank.x0 + 22; s.goo.center[0] = (s.tank.x0 + s.tank.x1) / 2; s.maxLevel = (s.tank.y1 - s.tank.y0) * 0.94; }
     else s.maxLevel = 330;
+    s.water = null;
+    if (s.tank && WOG.Water) {
+      s.water = new WOG.Water({ center: [(s.tank.x0 + s.tank.x1) / 2, s.tank.y0 + 1], width: s.tank.x1 - s.tank.x0 + 2 * E.glassPad, height: 2, depth: 0.0001, argb: E.waterColor.slice() });
+      world.waters = [s.water];
+    }
     s.gush = null;
     var gp = sc.particles.filter(function (p) { return p.id === 'gooGush'; })[0] || sc.particles[0];
     if (gp && WOG.fx) {
@@ -276,6 +282,7 @@
       s.goo.enabled = !s.flushed && s.level > 1 && !s.flushing;
       s.goo.height = s.level; s.goo.center[1] = s.floorY + s.level / 2;
     }
+    if (s.water) { s.water.bottom = s.floorY; s.water.top = s.floorY + Math.max(0, s.level); s.water.update(dt); }
     var P = WOG.PHYS, simDt = dt * P.timeScale, n = Math.max(1, Math.ceil(simDt / P.subStep)), h = simDt / n, i, b2;
     for (i = 0; i < s.balls.length; i++) s.balls[i].state = 'tank';
     for (i = 0; i < n; i++) world.step(h);
@@ -418,12 +425,8 @@
     cam.apply(ctx, W, H, pixelScale);
     ctx.save();
     ctx.beginPath(); ctx.rect(t.x0 - E.glassPad, t.y0 - 14, (t.x1 - t.x0) + 2 * E.glassPad, 900); ctx.clip();
+    if (s.water && s.level > 0.5) s.water.draw(ctx);
     for (i = 0; i < s.balls.length; i++) s.balls[i].draw(ctx, res, s.time, look);
-    if (s.level > 0.5) {
-      var top = t.y0 + s.level, wob = Math.sin(s.time * 3) * 1.2;
-      ctx.fillStyle = 'rgba(8,8,8,0.62)'; ctx.fillRect(t.x0 - E.glassPad, t.y0, t.x1 - t.x0 + 2 * E.glassPad, s.level + wob);
-      ctx.fillStyle = 'rgba(70,70,70,0.7)'; ctx.fillRect(t.x0 - E.glassPad, top + wob - 1.5, t.x1 - t.x0 + 2 * E.glassPad, 3);
-    }
     ctx.restore();
     if (WOG.debug && WOG.debug.geometry) {
       ctx.save(); ctx.lineWidth = 2 / (cam.zoom * pixelScale);
