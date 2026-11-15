@@ -1,5 +1,4 @@
-// might need to tweak this still because this does not use ODE unlike the original game
-// hey, if you're reading this please help me with the physics.
+//physboi
 (function () {
   var P = WOG.PHYS = {
     enabled: true,
@@ -74,6 +73,9 @@
         friction: WOG.num(WOG.attr(el, 'friction')),
         bounce: WOG.num(WOG.attr(el, 'bounce')),
         minbouncevel: WOG.num(WOG.attr(el, 'minbouncevel')),
+        // PhysBoy's loader uses this spelling. Shipped minbouncevel entries
+        // therefore use the native default for the ODE simulation.
+        bounceminvel: WOG.num(WOG.attr(el, 'bounceminvel')),
         stickiness: WOG.num(WOG.attr(el, 'stickiness'))
       };
     });
@@ -131,10 +133,11 @@
   }
   function dist(a, b) { var dx = b.x - a.x, dy = b.y - a.y; return Math.sqrt(dx * dx + dy * dy); }
   function springConst(def, rest) {
-    var span = (def.maxlen2 - def.minlen) || 1;
-    var t = Math.max(0, Math.min(1, (rest - def.minlen) / span));
-    return t * (def.springconstmax - def.springconstmin) + def.springconstmin;
+    var span = def.maxlen2 - def.minlen;
+    var t = span ? Math.max(0, Math.min(1, (rest - def.minlen) / span)) : Number(rest >= def.minlen);
+    return def.springconstmax + t * (def.springconstmin - def.springconstmax);
   }
+  World.springConstant = springConst;
 
   World.prototype.refreshMasses = function () {
     this.balls.forEach(function (b) {
@@ -664,7 +667,9 @@
     if (b.fast && this.thwack(b)) return false;
     var k, st, sp, best = null, o, gm = b.fast ? 0 : P.grabMargin;
     for (k = 0; k < this.strands.length; k++) {
-      st = this.strands[k]; sp = segPoint(st.a, st.b, b.x, b.y);
+      st = this.strands[k];
+      if (st.def.walkable === false) continue;
+      sp = segPoint(st.a, st.b, b.x, b.y);
       if (sp.d < b.radius + gm && (!best || sp.d < best.d)) best = { s: st, t: sp.t, x: sp.x, y: sp.y, d: sp.d, dir: this.climbDir(b, st) };
     }
     if (!best) {
@@ -675,7 +680,7 @@
         if (dx * dx + dy * dy >= rr * rr) continue;
         var bs = null, bd = Infinity;
         for (var q = 0; q < this.strands.length; q++) {
-          st = this.strands[q]; if (st.a !== o && st.b !== o) continue;
+          st = this.strands[q]; if (st.def.walkable === false || (st.a !== o && st.b !== o)) continue;
           var oth = st.a === o ? st.b : st.a, dd = (oth.x - b.x) * (oth.x - b.x) + (oth.y - b.y) * (oth.y - b.y);
           if (dd < bd) { bd = dd; bs = st; }
         }
@@ -801,7 +806,7 @@
       if (move < remain) { c.t += c.dir * move / L; move = 0; break; }
       move -= remain;
       var E = c.dir > 0 ? B : A, options = [];
-      this.strands.forEach(function (s2) { if (s2 !== c.s && (s2.a === E || s2.b === E)) options.push(s2); });
+      this.strands.forEach(function (s2) { if (s2 !== c.s && s2.def.walkable !== false && (s2.a === E || s2.b === E)) options.push(s2); });
       if (!options.length) { c.t = c.dir > 0 ? 1 : 0; c.dir = -c.dir; continue; }
       var pick = options[Math.floor(r() * options.length)];
       if (r() < P.aiClimbGoal) {
@@ -883,6 +888,7 @@
       if (b.onGround && (b.wakeJump || t >= b.jumpCool)) {
         var best = null;
         for (k = 0; k < this.strands.length; k++) {
+          if (this.strands[k].def.walkable === false) continue;
           var sp = segPoint(this.strands[k].a, this.strands[k].b, b.x, b.y);
           if (!best || sp.d < best.d) best = sp;
         }

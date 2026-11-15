@@ -1,4 +1,4 @@
-//work on bodies for the other stuff
+//work on bodies for the other stuff, this is like the burning man
 (function () {
   var contact = WOG.World.contact;
   var K = WOG.BODY = {
@@ -53,7 +53,8 @@
     var b = { id: d.id, x: d.x + off[0], y: d.y + off[1], a: d.rotation, vx: 0, vy: 0, w: 0, mass: M, noGeom: !!d.noGeom, shapes: [], image: null };
     shapes.forEach(function (s) {
       var dx = s.x - cx, dy = s.y - cy;
-      I += (s.kind === 'circle' ? s.m * s.radius * s.radius / 2 : s.m * (s.width * s.width + s.height * s.height) / 12) + s.m * (dx * dx + dy * dy);
+      var circleFactor = self.world.odeSphereFactor == null ? 0.5 : self.world.odeSphereFactor;
+      I += (s.kind === 'circle' ? circleFactor * s.m * s.radius * s.radius : s.m * (s.width * s.width + s.height * s.height) / 12) + s.m * (dx * dx + dy * dy);
       var o = { kind: s.kind, id: s.id, tag: s.tag, material: s.material, static: false, body: b, lx: dx, ly: dy, la: s.rotation || 0,
                 width: s.width, height: s.height, radius: s.radius, x: 0, y: 0, rotation: 0, mass: s.m };
       o.br = s.kind === 'circle' ? s.radius : Math.sqrt(s.width * s.width + s.height * s.height) / 2;
@@ -136,7 +137,7 @@
     }
   };
 
-  BodySystem.prototype.collect = function () {
+  BodySystem.prototype.collect = function (emitPair) {
     var W = this.world, bs = this.bodies, i, j, a, b, s, t, k, g, dx, dy;
     this.contacts.length = 0;
     for (i = 0; i < bs.length; i++) {
@@ -152,7 +153,8 @@
             dx = s.x - g.x; dy = s.y - g.y;
             if (dx * dx + dy * dy > (s.br + g._br) * (s.br + g._br)) continue;
           }
-          this.pair(s, a, g, GROUND);
+          if (emitPair) emitPair(s, a, g, null);
+          else this.pair(s, a, g, GROUND);
         }
       }
       for (j = i + 1; j < bs.length; j++) {
@@ -161,7 +163,8 @@
         for (k = 0; k < a.shapes.length; k++) for (var m = 0; m < b.shapes.length; m++) {
           s = a.shapes[k]; t = b.shapes[m]; dx = s.x - t.x; dy = s.y - t.y;
           if (dx * dx + dy * dy > (s.br + t.br) * (s.br + t.br)) continue;
-          this.pair(s, a, t, b);
+          if (emitPair) emitPair(s, a, t, b);
+          else this.pair(s, a, t, b);
         }
       }
     }
@@ -188,19 +191,8 @@
       c.target = Math.max(0, K.beta / h * Math.max(c.pen - K.slop, 0));
       if (c.bo > 0 && -vn > K.bounceMin) c.target = Math.max(c.target, -c.bo * vn);
     }
+    this.prepareJoints();
     var js = this.joints;
-    for (i = 0; i < js.length; i++) {
-      j = js[i]; A = j.b1; B = j.b2;
-      var r1 = rot(j.l1[0], j.l1[1], A.a), r2 = rot(j.l2[0], j.l2[1], B.a);
-      j.r1x = r1[0]; j.r1y = r1[1]; j.r2x = r2[0]; j.r2y = r2[1];
-      j.cx = (B.x + r2[0]) - (A.x + r1[0]); j.cy = (B.y + r2[1]) - (A.y + r1[1]);
-      var k11 = A.im + B.im + A.ii * r1[1] * r1[1] + B.ii * r2[1] * r2[1];
-      var k12 = -A.ii * r1[0] * r1[1] - B.ii * r2[0] * r2[1];
-      var k22 = A.im + B.im + A.ii * r1[0] * r1[0] + B.ii * r2[0] * r2[0];
-      var det = k11 * k22 - k12 * k12 || 1e-9;
-      j.i11 = k22 / det; j.i12 = -k12 / det; j.i22 = k11 / det;
-      j.ka = A.ii + B.ii; j.theta = B.a - A.a - j.ref; j.accLo = 0; j.accHi = 0;
-    }
     for (it = 0; it < K.iterations; it++) {
       for (i = 0; i < js.length; i++) this.solveJoint(js[i], h);
       for (i = 0; i < cs.length; i++) this.solveContact(cs[i]);
@@ -213,6 +205,21 @@
       n.x += n.vx * h; n.y += n.vy * h; n.a += n.w * h;
     }
     this.sync();
+  };
+
+  BodySystem.prototype.prepareJoints = function () {
+    for (var i = 0; i < this.joints.length; i++) {
+      var j = this.joints[i], A = j.b1, B = j.b2;
+      var r1 = rot(j.l1[0], j.l1[1], A.a), r2 = rot(j.l2[0], j.l2[1], B.a);
+      j.r1x = r1[0]; j.r1y = r1[1]; j.r2x = r2[0]; j.r2y = r2[1];
+      j.cx = (B.x + r2[0]) - (A.x + r1[0]); j.cy = (B.y + r2[1]) - (A.y + r1[1]);
+      var k11 = A.im + B.im + A.ii * r1[1] * r1[1] + B.ii * r2[1] * r2[1];
+      var k12 = -A.ii * r1[0] * r1[1] - B.ii * r2[0] * r2[1];
+      var k22 = A.im + B.im + A.ii * r1[0] * r1[0] + B.ii * r2[0] * r2[0];
+      var det = k11 * k22 - k12 * k12 || 1e-9;
+      j.i11 = k22 / det; j.i12 = -k12 / det; j.i22 = k11 / det;
+      j.ka = A.ii + B.ii; j.theta = B.a - A.a - j.ref; j.accLo = 0; j.accHi = 0;
+    }
   };
 
   BodySystem.prototype.relN = function (c) {

@@ -1,4 +1,4 @@
-// game starter
+// full game sequence
 (function () {
   var BASE_W = 800, BASE_H = 600;
 
@@ -43,6 +43,7 @@
   WOG.resize = resize;
 
   async function startLevel(name) {
+    if (WOG.cloud) WOG.cloud.leave();
     saveWogcStructure();
     game = null;
     res.missing = [];
@@ -111,6 +112,7 @@
       game.world.playSound = function (b, ev) { res.playSound(b.def.sounds[ev]); };
       game.world.waters = waters;
       game.world.onSplash = function (x, y) { if (WOG.fx && (!WOG.settings || WOG.settings.get('particles'))) WOG.fx.burst(game, res, 'splash', x, y, 0).catch(function () {}); };
+      if (WOG.cloud) WOG.cloud.enter(game, res);
       if (WOG.favicon) WOG.favicon.set(name);
       WOG.music.play(res, data.level.music);
       status = '';
@@ -169,6 +171,7 @@
   function layerSpin(l) { return !ANIMS[l.anim] && l.anim === 'rot_1rps' ? l.animspeed * Math.PI * 2 * time : 0; }
 
   function drawLayer(l) {
+    if (l.cloudLayer) { if (WOG.cloud) WOG.cloud.draw(ctx, res, camera, canvas.width, canvas.height, pixelScale, game, mouse); return; }
     if (l.isWater) { camera.applyDepth(ctx, canvas.width, canvas.height, pixelScale, l.depth, 0, 0); if (camera.depthFactor(l.depth)) l.draw(ctx); return; }
     if (l.pipeObj) { WOG.pipe.draw(ctx, res, camera, canvas.width, canvas.height, pixelScale, game, l); return; }
     if (l.pipePops) { WOG.pipe.drawPops(ctx, res, camera, canvas.width, canvas.height, pixelScale, game, l); return; }
@@ -466,9 +469,9 @@
   }
   var uiHover = null;
   function updateHover() {
-    uiHover = game && game.ui && !inputLocked() && !settingsOpen && inside ? WOG.islandUi.buttonAt(game.ui, res, mouse.sx, mouse.sy) : null;
+    uiHover = game && game.ui && !inputLocked() && !settingsOpen && !profOpen() && inside ? WOG.islandUi.buttonAt(game.ui, res, mouse.sx, mouse.sy) : null;
     if (game && game.ui) WOG.islandUi.update(game.ui, uiHover, frameDt);
-    if (!game || !game.buttons.length || inputLocked() || settingsOpen) { if (hover && hover.onmouseexit) WOG.map.call(hover.onmouseexit, hover); hover = null; if (game) game.buttons.forEach(function (o) { o.image = (!o.enabled && o.disabled) ? o.disabled : o.up; }); return; }
+    if (!game || !game.buttons.length || inputLocked() || settingsOpen || profOpen()) { if (hover && hover.onmouseexit) WOG.map.call(hover.onmouseexit, hover); hover = null; if (game) game.buttons.forEach(function (o) { o.image = (!o.enabled && o.disabled) ? o.disabled : o.up; }); return; }
     var b = uiHover ? null : buttonAt(mouse.sx * pixelScale, mouse.sy * pixelScale);
     if (b !== hover) {
       if (hover && hover.onmouseexit) WOG.map.call(hover.onmouseexit, hover);
@@ -484,6 +487,7 @@
     canvas.style.cursor = hover && hover.enabled ? 'pointer' : 'default';
   }
 
+  function profOpen() { return !!(WOG.profiles && WOG.profiles.isOpen()); }
   function inputLocked() { return WOG.movie.covering || introLocked(); }
   function introLocked() { return !!(game && camera.playing && camera.mode === 'intro' && camera.introLength() > 0); }
   var BAR_H = 75;
@@ -591,7 +595,9 @@
         game.drawables = game.drawables.filter(function (e) { return !e.done; });
       }
     }
+    if (game && WOG.cloud) WOG.cloud.update(game, dt);
     if (game && !game.isMap && !game.eol && !game.sign && !inputLocked()) game.playTime = (game.playTime || 0) + dt;
+    if (WOG.profiles && game && !game.isMap && !game.eol && !game.sign && !inputLocked()) WOG.profiles.tick(dt);
     if (game && !game.isMap && !game.eol && !game.sign && WOG.pipe && game.data.level.exit) WOG.pipe.update(game, res, dt);
     if (game && !game.isMap && !game.sign && WOG.eol) WOG.eol.update(game, res, dt, mouse.sx, mouse.sy);
     WOG.movie.update(dt);
@@ -603,10 +609,11 @@
     if (WOG.settings && WOG.settings.apply) WOG.settings.apply();
     if (settingsOpen && WOG.settingsUI) WOG.settingsUI.drag(mouse.sx, mouse.sy, mouse.down && mouse.button === 0);
     if (settingsOpen) { ctx.setTransform(pixelScale, 0, 0, pixelScale, 0, 0); WOG.settingsUI.draw(ctx, mouse.sx, mouse.sy); }
-    else if (game) { drawScene(dt); if (game.eol) WOG.eol.draw(ctx, res, canvas.width, canvas.height, pixelScale, game); else if (WOG.eol && WOG.eol.drawHandle) WOG.eol.drawHandle(ctx, res, pixelScale, game); }
+    else if (game) { drawScene(dt); if (WOG.cloud) WOG.cloud.drawHud(ctx, pixelScale, game); if (game.eol) WOG.eol.draw(ctx, res, canvas.width, canvas.height, pixelScale, game); else if (WOG.eol && WOG.eol.drawHandle) WOG.eol.drawHandle(ctx, res, pixelScale, game); }
     else { ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.fillStyle = '#000'; ctx.fillRect(0, 0, canvas.width, canvas.height); }
+    if (profOpen()) WOG.profiles.draw(ctx, res, pixelScale, mouse.sx, mouse.sy, performance.now() / 1000);
     var P2 = performance.now();
-    if (!settingsOpen) { drawTip(); drawLetterbox(); if (game && game.ui) WOG.islandUi.draw(ctx, res, pixelScale, game.ui); }
+    if (!settingsOpen && !profOpen()) { drawTip(); drawLetterbox(); if (game && game.ui) WOG.islandUi.draw(ctx, res, pixelScale, game.ui); }
     drawSeasonCard(dt);
     var P3 = performance.now();
     WOG.movie.draw(ctx, pixelScale);
@@ -642,9 +649,11 @@
   }
   canvas.addEventListener('mousedown', function (e) {
     var p = canvasPos(e); mouse.sx = p.x; mouse.sy = p.y;
+    if (e.button === 0 && creditsSkippable()) { WOG.movie.skip(); return; }
     if (e.button === 0 && game && game.eol) { WOG.eol.click(game, mouse.sx, mouse.sy); return; }
     if (e.button === 0 && game && game.sign) { WOG.signpost.click(game); return; }
     if (inputLocked()) return;
+    if (profOpen()) { if (e.button === 0) WOG.profiles.click(mouse.sx, mouse.sy); return; }
     if (e.button === 0 && !settingsOpen && game && !game.isMap && !game.eol && WOG.signpost && WOG.signpost.clickLevel(game, mouse.sx, mouse.sy, camera, res)) return;
     if (e.button === 0 && !settingsOpen && game && !game.isMap && !game.eol && WOG.eol && WOG.eol.clickLevel && WOG.eol.clickLevel(game, mouse.sx, mouse.sy)) return;
     mouse.down = true; mouse.button = e.button;
@@ -667,6 +676,8 @@
   }, { passive: false });
   window.addEventListener('keydown', function (e) {
     keys[e.key] = true;
+    if (profOpen()) { if (WOG.profiles.key(e)) e.preventDefault(); return; }
+    if (e.key === 'Escape' && creditsSkippable()) { WOG.movie.skip(); return; }
     if (e.key === 'Escape') {
       if (settingsOpen) { if (!going && !WOG.movie.busy) WOG.closeSettings(); }
       else if (WOG.movie.busy) { if (dbg()) WOG.movie.skip(); }
@@ -710,13 +721,12 @@
     going = true;
     try {
       if (opts.intro && !opts.covered && /^island\d+$/.test(name)) {
-        var K = WOG.SEASON_CARD;
-        seasonCard = { text: WOG.text.get('CHAPTER_' + opts.intro + '_SEASON'), a: K.fadeIn > 0 ? 0 : 1 };
-        if (K.fadeIn > 0) { await wait(K.fadeIn); seasonCard.a = 1; }
-        await Promise.all([startLevel(name), wait(K.hold)]);
-        var outP = WOG.movie.play(res, K.outMovie);
-        seasonCard = null;
-        await outP;
+        var K = WOG.SEASON_CARD, seasonVars = { SEASON_TEXT: WOG.text.get('CHAPTER_' + opts.intro + '_SEASON') };
+        await WOG.movie.play(res, 'gooTransition_in', { hold: true });
+        var loadingIsland = startLevel(name);
+        await WOG.movie.play(res, 'seasonDisplay', { hold: true, vars: seasonVars, loopFor: K.hold, loopUntil: loadingIsland });
+        await loadingIsland;
+        await WOG.movie.play(res, 'gooTransition_out');
       } else if (name === MAP || /^island\d+$/.test(name)) {
         if (!opts.covered) await WOG.movie.play(res, 'gooTransition_in', { hold: true });
         await startLevel(name);
@@ -760,6 +770,39 @@
       await WOG.movie.play(res, 'gooTransition_out');
     } finally { going = false; }
   };
+  WOG.openProfiles = async function () {
+    if (going || settingsOpen || !WOG.profiles || WOG.profiles.isOpen()) return;
+    going = true;
+    try {
+      setTip(null);
+      await WOG.movie.play(res, 'gooTransition_in', { hold: true });
+      await WOG.profiles.show(res);
+      await WOG.movie.play(res, 'gooTransition_out');
+    } finally { going = false; }
+  };
+  WOG.closeProfiles = async function () {
+    if (going || !WOG.profiles || !WOG.profiles.isOpen()) return;
+    going = true;
+    try {
+      await WOG.movie.play(res, 'gooTransition_in', { hold: true });
+      WOG.profiles.hide();
+      await WOG.movie.play(res, 'gooTransition_out');
+    } finally { going = false; }
+  };
+  var creditsPlaying = false;
+  function creditsSkippable() { return creditsPlaying && WOG.movie.timeOf('credits') > 1; }
+  WOG.playCredits = async function () {
+    if (going || settingsOpen || profOpen()) return;
+    going = true;
+    try {
+      setTip(null);
+      await WOG.movie.play(res, 'gooTransition_in', { hold: true });
+      creditsPlaying = true;
+      await WOG.movie.play(res, 'credits', { hold: true });
+      creditsPlaying = false;
+      await WOG.movie.play(res, 'gooTransition_out');
+    } finally { creditsPlaying = false; going = false; }
+  };
     // levels and maps
   function levelInfoVars(name) {
     var isl = game && game.island, lv = isl && WOG.islandLevel(isl.id, name), n = isl && /(\d+)$/.exec(isl.id);
@@ -785,6 +828,7 @@
   var waterLoaded = loadScript('water');
   var bodiesLoaded = loadScript('bodies');
   var saveLoaded = loadScript('save');
+  saveLoaded.then(function () { return loadScript('profiles'); });
   loadScript('islandui');
   loadScript('pipe');
   loadScript('signpost');
@@ -909,7 +953,9 @@
         var lv = { wogcorp_intact: 'wogc', wogcorp_3d: 'wogc3d', wogcorp_destroyed: 'wogcd' }[b && b.id];
         if (lv && WOG.LEVELS.indexOf(lv) >= 0) { WOG.returnTo = MAP; WOG.go(lv); } else console.warn('WoG Corp level not found for ' + (b && b.id));
       },
-      quit: function () { WOG.openSettings(); }
+      quit: function () { WOG.openSettings(); },
+      credits: function () { WOG.playCredits(); },
+      showselectprofile: function () { WOG.openProfiles(); }
     },
     openIsland: function (n) {
       var name = 'island' + n;

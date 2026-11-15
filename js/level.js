@@ -1,4 +1,4 @@
-// this is how you load the levels that make you wanna punch your screen xO
+// this is how you load the levels and the layers arent right yet
 (function () {
 
   WOG.GEOM_IMAGE_DEPTH = 0;
@@ -73,7 +73,7 @@
       minx: num(A(root, 'minx')), miny: num(A(root, 'miny')),
       maxx: num(A(root, 'maxx')), maxy: num(A(root, 'maxy')),
       background: WOG.rgb(A(root, 'backgroundcolor'), [0, 0, 0]),
-      layers: [], buttons: [], geometry: [], bodies: [], hinges: [], forcefields: [], particles: [], unknown: {}
+      layers: [], labels: [], buttons: [], geometry: [], bodies: [], hinges: [], forcefields: [], particles: [], unknown: {}
     };
     WOG.children(root).forEach(function (el) {
       switch (el.tagName) {
@@ -101,6 +101,10 @@
           break;
         case 'signpost':
           scene.layers.push(parseSignpost(el));
+          break;
+        case 'label':
+          scene.labels.push({ id: A(el, 'id') || '', x: num(A(el, 'x')), y: num(A(el, 'y')), align: A(el, 'align') || 'center', rotation: -num(A(el, 'rotation')) * Math.PI / 180,
+            scale: num(A(el, 'scale'), 1), font: A(el, 'font'), text: A(el, 'text') });
           break;
         case 'button':
           scene.buttons.push(parseButton(el, null));
@@ -139,7 +143,8 @@
             center: A(el, 'center') != null ? WOG.vec(A(el, 'center')) : null,
             width: A(el, 'width') != null ? num(A(el, 'width')) : null,
             height: A(el, 'height') != null ? num(A(el, 'height')) : null,
-            dampeningfactor: num(A(el, 'dampeningfactor')), antigrav: WOG.bool(A(el, 'antigrav')),
+            dampeningfactor: num(A(el, 'dampeningfactor')), rotationaldampeningfactor: num(A(el, 'rotationaldampeningfactor')),
+            antigrav: WOG.bool(A(el, 'antigrav'), true),
             geomonly: WOG.bool(A(el, 'geomonly')),
             enabled: A(el, 'enabled') == null ? true : WOG.bool(A(el, 'enabled')),
             water: WOG.bool(A(el, 'water')), color: A(el, 'color'),
@@ -150,7 +155,8 @@
           scene.forcefields.push({ kind: 'radial', id: A(el, 'id'), type: A(el, 'type'),
             center: WOG.vec(A(el, 'center')), radius: num(A(el, 'radius')),
             forceatcenter: num(A(el, 'forceatcenter')), forceatedge: num(A(el, 'forceatedge')),
-            dampeningfactor: num(A(el, 'dampeningfactor')), antigrav: WOG.bool(A(el, 'antigrav')),
+            dampeningfactor: num(A(el, 'dampeningfactor')), rotationaldampeningfactor: num(A(el, 'rotationaldampeningfactor')),
+            antigrav: WOG.bool(A(el, 'antigrav'), true),
             geomonly: WOG.bool(A(el, 'geomonly')),
             enabled: A(el, 'enabled') == null ? true : WOG.bool(A(el, 'enabled')) });
           break;
@@ -171,6 +177,7 @@
     var root = doc.documentElement;
     var lvl = {
       ballsrequired: num(A(root, 'ballsrequired')),
+      strandgeom: WOG.bool(A(root, 'strandgeom')),
       autobounds: WOG.bool(A(root, 'autobounds')),
       cursorColor: A(root, 'cursor1color') ? WOG.rgb(A(root, 'cursor1color')) : [255, 255, 255],
       letterboxed: WOG.bool(A(root, 'letterboxed')),

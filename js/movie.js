@@ -1,5 +1,5 @@
 // movie loader that only loads like 8 movies and none of them are level movies
-// only here because of xowerr
+// only here because of xowy64
 (function () {
   var A = WOG.attr, num = WOG.num;
   var MOVIE_W = 1095, VIEW_W = 800, VIEW_H = 600;
@@ -63,7 +63,8 @@
     var v = p.vars[a.id.slice(1)]; if (v == null) v = MOVIE.vars[a.id.slice(1)];
     return v;
   }
-  function fontName(res, id) { var d = res.defs[id]; return d && d.type === 'font' ? d.path.split('/').pop() : null; }
+  var FONT_ALIAS = { FONT_OUTLINE_18: 'TwCenMTCondensedExtraBold18', FONT_OUTLINE_26: 'TwCenMTCondensedExtraBold18' };   // only used when the manifest has no such font
+  function fontName(res, id) { var d = res.defs[id]; return d && d.type === 'font' ? d.path.split('/').pop() : (FONT_ALIAS[id] || null); }
   async function prepare(res, def, vars) {
     var jobs = [], seen = {};
     def.actors.forEach(function (a) {

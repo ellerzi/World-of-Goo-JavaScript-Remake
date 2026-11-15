@@ -1,29 +1,42 @@
 //saving games quite lazy to finish this one but YAY its done :)
 (function () {
-  var KEY = 'wog.save.v1', MAX_AGE = 10 * 365 * 24 * 3600;
+  var BASE = 'wog.save.v1', KEY = BASE, MAX_AGE = 10 * 365 * 24 * 3600;
   function fresh() { return { v: 1, completed: {}, extras: {}, wogcorp: 'intact', struct: null }; }
   var data = fresh(), listeners = [];
 
-  function readRaw() {
-    var m = new RegExp('(?:^|; )' + KEY.replace(/\./g, '\\.') + '=([^;]*)').exec(document.cookie || '');
+  // raw storage by key 
+  function rawGet(k) {
+    var m = new RegExp('(?:^|; )' + k.replace(/\./g, '\\.') + '=([^;]*)').exec(document.cookie || '');
     if (m) return decodeURIComponent(m[1]);
-    try { return window.localStorage.getItem(KEY); } catch (e) { return null; }
+    try { return window.localStorage.getItem(k); } catch (e) { return null; }
   }
-  function write() {
-    var json = JSON.stringify(data), ok = false;
+  function rawSet(k, json) {
+    var ok = false;
     if (encodeURIComponent(json).length > 3500) {
-      try { window.localStorage.setItem(KEY, json); document.cookie = KEY + '=; max-age=0; path=/; SameSite=Lax'; return; } catch (e) { console.warn('save data too big for a cookie and localStorage is blocked'); }
+      try { window.localStorage.setItem(k, json); document.cookie = k + '=; max-age=0; path=/; SameSite=Lax'; return; } catch (e) { console.warn('save data too big for a cookie and localStorage is blocked'); }
     }
     try {
-      document.cookie = KEY + '=' + encodeURIComponent(json) + '; max-age=' + MAX_AGE + '; path=/; SameSite=Lax';
-      ok = (document.cookie || '').indexOf(KEY + '=') >= 0;
+      document.cookie = k + '=' + encodeURIComponent(json) + '; max-age=' + MAX_AGE + '; path=/; SameSite=Lax';
+      ok = (document.cookie || '').indexOf(k + '=') >= 0;
     } catch (e) {}
-    if (!ok) { try { window.localStorage.setItem(KEY, json); } catch (e) {} }
-    else { try { window.localStorage.removeItem(KEY); } catch (e) {} }
+    if (!ok) { try { window.localStorage.setItem(k, json); } catch (e) {} }
+    else { try { window.localStorage.removeItem(k); } catch (e) {} }
   }
-  function wipe() {
-    try { document.cookie = KEY + '=; max-age=0; path=/; SameSite=Lax'; } catch (e) {}
-    try { window.localStorage.removeItem(KEY); } catch (e) {}
+  function rawDel(k) {
+    try { document.cookie = k + '=; max-age=0; path=/; SameSite=Lax'; } catch (e) {}
+    try { window.localStorage.removeItem(k); } catch (e) {}
+  }
+  function readRaw() { return rawGet(KEY); }
+  function write() { rawSet(KEY, JSON.stringify(data)); }
+  function wipe() { rawDel(KEY); }
+  function slotKey(n) { return n ? BASE + '.p' + n : BASE; }   // slot 0 keeps the old key, so existing saves become profile 1
+  function parse(raw) {
+    var d = fresh();
+    try {
+      var s = raw ? JSON.parse(raw) : null;
+      if (s && s.completed && typeof s.completed === 'object') { d.completed = s.completed; if (s.extras && typeof s.extras === 'object') d.extras = s.extras; if (s.struct && Array.isArray(s.struct.b)) d.struct = s.struct; if (/^(intact|3d|destroyed)$/.test(s.wogcorp)) d.wogcorp = s.wogcorp; }
+    } catch (e) {}
+    return d;
   }
   function changed() { listeners.forEach(function (f) { try { f(data); } catch (e) { console.warn(e); } }); }
 
@@ -46,12 +59,13 @@
     setStructure: function (st) { data.struct = st; write(); },
     reset: function () { data = fresh(); wipe(); changed(); },
     onChange: function (f) { listeners.push(f); },
-    load: function () {
-      try {
-        var raw = readRaw(), s = raw ? JSON.parse(raw) : null;
-        if (s && s.completed && typeof s.completed === 'object') { data = fresh(); data.completed = s.completed; if (s.extras && typeof s.extras === 'object') data.extras = s.extras; if (s.struct && Array.isArray(s.struct.b)) data.struct = s.struct; if (/^(intact|3d|destroyed)$/.test(s.wogcorp)) data.wogcorp = s.wogcorp; }
-      } catch (e) { data = fresh(); }
-    }
+    load: function () { data = parse(readRaw()); },
+    // profile slots
+    rawGet: rawGet, rawSet: rawSet, rawDel: rawDel,
+    slotKey: slotKey,
+    useSlot: function (n) { KEY = slotKey(n); data = parse(readRaw()); changed(); },
+    peek: function (n) { return parse(rawGet(slotKey(n))); },
+    wipeSlot: function (n) { rawDel(slotKey(n)); if (slotKey(n) === KEY) { data = fresh(); changed(); } }
   };
   S.load();
 })();

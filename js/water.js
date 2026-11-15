@@ -1,4 +1,5 @@
-// i honestly could have just merged this with another javascript file but who gaf its more organized
+// splashy wwater
+// todo: fix splash
 (function () {
   var S = WOG.water = {
     SPACING: 10,

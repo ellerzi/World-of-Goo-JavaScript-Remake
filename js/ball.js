@@ -1,4 +1,4 @@
-// game.js needs the game to run but balls.js is needed for the game to be the game
+// goo balls :)
 (function () {
   var A = WOG.attr, num = WOG.num;
 
@@ -57,6 +57,8 @@
           springconstmin: num(A(el, 'springconstmin')), springconstmax: num(A(el, 'springconstmax')),
           dampfac: num(A(el, 'dampfac')), maxlen1: num(A(el, 'maxlen1')), maxlen2: num(A(el, 'maxlen2')),
           minlen: num(A(el, 'minlen')), maxforce: num(A(el, 'maxforce')),
+          shrinklen: num(A(el, 'shrinklen'), num(A(el, 'maxlen2'))),
+          walkable: WOG.bool(A(el, 'walkable'), true),
           thickness: A(el, 'thickness') != null ? num(A(el, 'thickness')) : null };
       } else if (el.tagName === 'detachstrand') {
         def.detachStrand = { image: A(el, 'image'), maxlen: num(A(el, 'maxlen')) };

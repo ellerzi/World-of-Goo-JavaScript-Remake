@@ -1,4 +1,4 @@
-// chapter ui becausue thas a seperate level forsome reason :(*2
+// chapter ui becausue thas a seperate level forsome reason no ideas why because developer is silly gboi :(*2
 (function () {
   var A = WOG.attr, num = WOG.num;
   var NAME = 'IslandUi';
